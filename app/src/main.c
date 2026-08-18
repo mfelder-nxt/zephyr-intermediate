@@ -1,58 +1,47 @@
-#include <stdint.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-LOG_MODULE_REGISTER(l1_task1, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(l2_task1, LOG_LEVEL_DBG);
 
 #define STACK_SIZE 1024
 
-#define PRIO_LOW 7
-#define PRIO_MED 5
-#define PRIO_HIGH 3
+#define TASK_PRIO 5
 
-#define PRIO_CCOP -1
+#define MAX_COUNT 1000000
 
-void t_coop_fn(void *p1, void *p2, void *p3) {
-  for (uint8_t i = 0; i < 5; i++) {
-    LOG_INF("T_COOP running %d/5", i + 1);
-    k_busy_wait(400000);
+static volatile uint32_t counter;
+
+static struct k_sem done_sem;
+
+static K_MUTEX_DEFINE(mtx_counter);
+
+void t_counter(void *p1, void *p2, void *p3) {
+  for (uint32_t i = 0; i < MAX_COUNT; i++) {
+    k_mutex_lock(&mtx_counter, K_FOREVER);
+    counter++;
+    k_mutex_unlock(&mtx_counter);
   }
 
-  k_yield();
-  LOG_INF("T_CCOP finished");
+  k_sem_give(&done_sem);
 }
 
-void t_low_fn(void *p1, void *p2, void *p3) {
-  while (1) {
-    LOG_INF("T_LOW running");
-    k_msleep(300);
-  }
-}
 
-void t_med_fn(void *p1, void *p2, void *p3) {
-  while (1) {
-    LOG_INF("T_MED running");
-    k_msleep(200);
-  }
-}
+K_THREAD_DEFINE(thread_a, STACK_SIZE, t_counter, NULL, NULL, NULL, TASK_PRIO, 0, 0);
 
-void t_high_fn(void *p1, void *p2, void *p3) {
-  while (1) {
-    LOG_INF("T_HIGH running");
-    k_msleep(100);
-  }
-}
-
-K_THREAD_DEFINE(thread_low, STACK_SIZE, t_low_fn, NULL, NULL, NULL, PRIO_LOW, 0,
-                0);
-K_THREAD_DEFINE(thread_med, STACK_SIZE, t_med_fn, NULL, NULL, NULL, PRIO_MED, 0,
-                0);
-K_THREAD_DEFINE(thread_high, STACK_SIZE, t_high_fn, NULL, NULL, NULL, PRIO_HIGH,
-                0, 0);
-K_THREAD_DEFINE(thread_coop, STACK_SIZE, t_coop_fn, NULL, NULL, NULL, PRIO_CCOP,
-                0, 0);
+K_THREAD_DEFINE(thread_b, STACK_SIZE, t_counter, NULL, NULL, NULL, TASK_PRIO, 0, 0);
 
 int main(void) {
-  LOG_INF("=== Lecture 1 - Task 1 ===");
+  k_sem_init(&done_sem, 0, 2);
+  LOG_INF("=== Lecture 2 - Task 1 ===");
+
+  k_sem_take(&done_sem, K_FOREVER);
+  k_sem_take(&done_sem, K_FOREVER);
+
+  LOG_INF("Counter value after both tasks finished: %d", counter);
+  if (counter != MAX_COUNT * 2) {
+    LOG_ERR("Counter missmatches excpected value");
+  } else {
+    LOG_INF("No race");
+  }
   return 0;
 }

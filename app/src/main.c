@@ -5,12 +5,13 @@
 LOG_MODULE_REGISTER(homework, LOG_LEVEL_INF);
 
 #define STACK_SIZE 2048
-#define CONTROL_PRIORITY 7
+#define CONTROL_PRIORITY 3
 #define MAINTENANCE_PRIORITY 4
 #define EVENT_PERIOD_MS 250
 #define MAINTENANCE_LOAD_US 45000
 
-#define DEADLINE_MS 40
+/* Timer event to the start of control processing, not its completion. */
+#define DEADLINE_MS 10
 
 struct control_event {
   uint32_t seq;
@@ -42,7 +43,7 @@ static void event_timer_expiry(struct k_timer *timer) {
 
   /* Both threads become ready when the timer interrupt returns. */
   k_sem_give(&maintenance_start);
-  sys_trace_named_event("maintenance start ready", event.seq, 4);
+  sys_trace_named_event("control_event_ready", event.seq, event.ready_ms);
 }
 
 K_TIMER_DEFINE(event_timer, event_timer_expiry, NULL);
@@ -66,15 +67,15 @@ static void control_fn(void *p1, void *p2, void *p3) {
       continue;
     }
     uint32_t latency = k_uptime_get_32() - event.ready_ms;
-
-    LOG_INF("[CONTROL] processed seq=%u, latency_ms=%u", event.seq, latency);
+    sys_trace_named_event("control_start", event.seq, latency);
 
     if (latency > DEADLINE_MS) {
       deadline_misses++;
       LOG_WRN_RATELIMIT("deadline_miss count=%u, seq=%u, latency_ms=%u",
                         deadline_misses, event.seq, latency);
     }
-    sys_trace_named_event("control_done", event.seq, latency);
+    LOG_INF("[CONTROL] seq=%u, start_latency_ms=%u, deadline_misses=%u",
+            event.seq, latency, deadline_misses);
   }
 }
 

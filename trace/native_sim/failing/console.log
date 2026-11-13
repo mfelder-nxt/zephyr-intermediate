@@ -1,0 +1,65 @@
+*** Booting Zephyr OS build v4.4.0 ***
+[00:00:00.000,000] <inf> homework: === L6 Homework: Runtime Investigation ===
+[00:00:00.000,000] <inf> homework: Control work must start within 10 ms
+[00:00:00.000,000] <inf> homework: Inspect, measure, trace, explain, and correct the delay
+
+uart:~$ kernel thread list
+Scheduler: 0 since last call
+Threads:
+ 0x41f260 maintenance
+	options: 0x0, priority: 4 timeout: 0
+	state: pending, entry: 0x4029b9
+	stack size 2048, unused 2008, usage 40 / 2048 (1 %)
+
+ 0x41f360 control
+	options: 0x0, priority: 7 timeout: 0
+	state: pending, entry: 0x4029dd
+	stack size 2048, unused 2008, usage 40 / 2048 (1 %)
+
+*0x41fb40 shell_uart
+	options: 0x0, priority: 14 timeout: 0
+	state: queued, entry: 0x40be1a
+	stack size 3072, unused 3032, usage 40 / 3072 (1 %)
+
+ 0x41f480 logging
+	options: 0x0, priority: 14 timeout: 0
+	state: pending, entry: 0x4060d9
+	stack size 768, unused 728, usage 40 / 768 (5 %)
+
+ 0x420520 idle
+	options: 0x1, priority: 15 timeout: 0
+	state: , entry: 0x40fd31
+	stack size 256, unused 216, usage 40 / 256 (15 %)
+
+uart:~$ [00:00:00.545,000] <inf> homework: [CONTROL] seq=0, start_latency_ms=40, deadline_misses=1
+[00:00:00.795,000] <inf> homework: [CONTROL] seq=1, start_latency_ms=40, deadline_misses=2
+[00:00:01.045,000] <wrn> homework: Skipped 2 messages
+[00:00:01.045,000] <wrn> homework: deadline_miss count=3, seq=2, latency_ms=40
+[00:00:01.045,000] <inf> homework: [CONTROL] seq=2, start_latency_ms=40, deadline_misses=3
+[00:00:01.295,000] <inf> homework: [CONTROL] seq=3, start_latency_ms=40, deadline_misses=4
+[00:00:01.545,000] <inf> homework: [CONTROL] seq=4, start_latency_ms=40, deadline_misses=5
+[00:00:01.795,000] <inf> homework: [CONTROL] seq=5, start_latency_ms=40, deadline_misses=6
+[00:00:02.045,000] <wrn> homework: Skipped 3 messages
+[00:00:02.045,000] <wrn> homework: deadline_miss count=7, seq=6, latency_ms=40
+[00:00:02.045,000] <inf> homework: [CONTROL] seq=6, start_latency_ms=40, deadline_misses=7
+[00:00:02.295,000] <inf> homework: [CONTROL] seq=7, start_latency_ms=40, deadline_misses=8
+[00:00:02.545,000] <inf> homework: [CONTROL] seq=8, start_latency_ms=40, deadline_misses=9
+[00:00:02.795,000] <inf> homework: [CONTROL] seq=9, start_latency_ms=40, deadline_misses=10
+[00:00:03.045,000] <wrn> homework: Skipped 3 messages
+[00:00:03.045,000] <wrn> homework: deadline_miss count=11, seq=10, latency_ms=40
+[00:00:03.045,000] <inf> homework: [CONTROL] seq=10, start_latency_ms=40, deadline_misses=11
+[00:00:03.295,000] <inf> homework: [CONTROL] seq=11, start_latency_ms=40, deadline_misses=12
+[00:00:03.545,000] <inf> homework: [CONTROL] seq=12, start_latency_ms=40, deadline_misses=13
+[00:00:03.795,000] <inf> homework: [CONTROL] seq=13, start_latency_ms=40, deadline_misses=14
+[00:00:04.045,000] <wrn> homework: Skipped 3 messages
+[00:00:04.045,000] <wrn> homework: deadline_miss count=15, seq=14, latency_ms=40
+[00:00:04.045,000] <inf> homework: [CONTROL] seq=14, start_latency_ms=40, deadline_misses=15
+[00:00:04.295,000] <inf> homework: [CONTROL] seq=15, start_latency_ms=40, deadline_misses=16
+[00:00:04.545,000] <inf> homework: [CONTROL] seq=16, start_latency_ms=40, deadline_misses=17
+[00:00:04.795,000] <inf> homework: [CONTROL] seq=17, start_latency_ms=40, deadline_misses=18
+[00:00:05.045,000] <wrn> homework: Skipped 3 messages
+[00:00:05.045,000] <wrn> homework: deadline_miss count=19, seq=18, latency_ms=40
+[00:00:05.045,000] <inf> homework: [CONTROL] seq=18, start_latency_ms=40, deadline_misses=19
+[00:00:05.295,000] <inf> homework: [CONTROL] seq=19, start_latency_ms=40, deadline_misses=20
+
+Stopped at 5.410s

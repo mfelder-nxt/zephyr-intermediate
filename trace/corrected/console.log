@@ -1,0 +1,56 @@
+SeaBIOS (version rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org)
+Booting from ROM..
+*** Booting Zephyr OS build v4.4.0 ***
+[00:00:00.000,000] <inf> homework: === L6 Homework: Runtime Investigation ===
+[00:00:00.000,000] <inf> homework: Control work must start within 10 ms
+[00:00:00.000,000] <inf> homework: Inspect, measure, trace, explain, and correct the delay
+
+uart:~$ [00:00:00.500,000] <inf> homework: [CONTROL] seq=0, start_latency_ms=0, deadline_misses=0
+[00:00:00.750,000] <inf> homework: [CONTROL] seq=1, start_latency_ms=0, deadline_misses=0
+[00:00:01.000,000] <inf> homework: [CONTROL] seq=2, start_latency_ms=0, deadline_misses=0
+[00:00:01.250,000] <inf> homework: [CONTROL] seq=3, start_latency_ms=0, deadline_misses=0
+[00:00:01.500,000] <inf> homework: [CONTROL] seq=4, start_latency_ms=0, deadline_misses=0
+kernel thread list
+Scheduler: 1 since last call
+Threads:
+ 0x11d000 maintenance
+	options: 0x0, priority: 4 timeout: 0
+	state: pending, entry: 0x100a5f
+	stack size 2048, unused 1676, usage 372 / 2048 (18 %)
+
+ 0x11d0a0 control
+	options: 0x0, priority: 3 timeout: 0
+	state: pending, entry: 0x100a80
+	stack size 2048, unused 1612, usage 436 / 2048 (21 %)
+
+*0x11d2c0 shell_uart
+	options: 0x0, priority: 14 timeout: 0
+	state: queued, entry: 0x108e67
+	stack size 2048, unused 908, usage 1140 / 2048 (55 %)
+
+ 0x11d140 logging
+	options: 0x0, priority: 14 timeout: 0
+	state: pending, entry: 0x103a99
+	stack size 768, unused 152, usage 616 / 768 (80 %)
+
+ 0x11d7a0 idle
+	options: 0x1, priority: 15 timeout: 0
+	state: , entry: 0x10e157
+	stack size 320, unused 0, usage 320 / 320 (100 %)
+
+uart:~$ [00:00:01.750,000] <inf> homework: [CONTROL] seq=5, start_latency_ms=0, deadline_misses=0
+[00:00:02.000,000] <inf> homework: [CONTROL] seq=6, start_latency_ms=0, deadline_misses=0
+[00:00:02.250,000] <inf> homework: [CONTROL] seq=7, start_latency_ms=0, deadline_misses=0
+[00:00:02.500,000] <inf> homework: [CONTROL] seq=8, start_latency_ms=0, deadline_misses=0
+[00:00:02.750,000] <inf> homework: [CONTROL] seq=9, start_latency_ms=0, deadline_misses=0
+[00:00:03.000,000] <inf> homework: [CONTROL] seq=10, start_latency_ms=0, deadline_misses=0
+[00:00:03.250,000] <inf> homework: [CONTROL] seq=11, start_latency_ms=0, deadline_misses=0
+[00:00:03.500,000] <inf> homework: [CONTROL] seq=12, start_latency_ms=0, deadline_misses=0
+[00:00:03.750,000] <inf> homework: [CONTROL] seq=13, start_latency_ms=0, deadline_misses=0
+[00:00:04.000,000] <inf> homework: [CONTROL] seq=14, start_latency_ms=0, deadline_misses=0
+[00:00:04.250,000] <inf> homework: [CONTROL] seq=15, start_latency_ms=0, deadline_misses=0
+[00:00:04.500,000] <inf> homework: [CONTROL] seq=16, start_latency_ms=0, deadline_misses=0
+[00:00:04.750,000] <inf> homework: [CONTROL] seq=17, start_latency_ms=0, deadline_misses=0
+[00:00:05.000,000] <inf> homework: [CONTROL] seq=18, start_latency_ms=0, deadline_misses=0
+[00:00:05.250,000] <inf> homework: [CONTROL] seq=19, start_latency_ms=0, deadline_misses=0
+QEMU: Terminated

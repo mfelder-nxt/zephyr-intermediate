@@ -1,0 +1,8 @@
+[0.500000000] named_event: { name = "control_event_ready", arg0 = 0, arg1 = 500 }
+[0.500000000] thread_switched_out: { thread_id = 4326688, name = "idle" }
+[0.500000000] thread_switched_in: { thread_id = 4321888, name = "maintenance" }
+[0.545000000] thread_switched_out: { thread_id = 4321888, name = "maintenance" }
+[0.545000000] thread_switched_in: { thread_id = 4322144, name = "control" }
+[0.545000000] named_event: { name = "control_start", arg0 = 0, arg1 = 40 }
+[0.545000000] thread_switched_out: { thread_id = 4322144, name = "control" }
+[0.545000000] thread_switched_in: { thread_id = 4326688, name = "idle" }

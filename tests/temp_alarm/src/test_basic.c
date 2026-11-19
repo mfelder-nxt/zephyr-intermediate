@@ -137,7 +137,8 @@ ZTEST(temp_alarm_threshold, test_new_threshold_clears_alarm)
 	zassert_ok(temp_alarm_get_status(&status), "get_status must succeed");
 	zassert_false(status.is_alarming, "set_threshold must clear the alarm");
 	zassert_ok(temp_alarm_check(), "second check must succeed");
-
+	
+	zassert_ok(temp_alarm_get_status(&status), "get_status must succeed");
 	zassert_false(status.is_alarming, "40 C is below 50 C, alarm must stay cleared");
 	zassert_equal(status.alarm_count, 1U, "alarm_count must stay 1, got %u",
 		      status.alarm_count);
